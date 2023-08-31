@@ -1,0 +1,4 @@
+limites:
+    memoria: "150Mi"
+peticiones:
+    memoria: "50Mi"
