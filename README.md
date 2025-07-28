@@ -1,69 +1,104 @@
-# Curso helm
-En este curso se trabajara con repositorios helm de kubernetes y sus demos para mayor entendimiento
+# Comandos helm charts
 
-## Instalacion
+## Introduccion
 
-[link instalacion](https://helm.sh/docs/intro/install/)
+Helm es un gestor de paquetes para Kubernetes que facilita la instalación, actualización y administración de aplicaciones mediante el uso de plantillas llamadas Charts. Permite automatizar la gestión del ciclo de vida de las aplicaciones, simplificando su despliegue y configuración en entornos Kubernetes
 
-## Comandos basicos
+## estructura de un chart
 
-helm add repo [url] --> añadir repo helm
-helm repo list      --> Listar los repos agregados
-helm search repo [nameRepo] --> buscar todos los paquetes que esten asociados al repositorio.
-helm search hub [app]  -> buscar paquetes en la nube 
-helm search repo [app]  -> buscar paquetes en los repos agregados
-helm search repo [app] -o yaml -> buscar paquetes en los repos y ver en formato yaml
-helm search repo [app] -o json -> buscar paquetes en los repos y ver en formato json
-helm search repo [app] -l  -> lista paquetes en los repos y si historial
-helm search repo [app] --version [VersionEspecifica]  -> lista los paquetes que cumplan con la version.
-helm  repo remove [app]   -> eliminar repositorio
-
-## instalar aplicaciones 
-
-Ejemplo de despliegue 
-
-helm repo add bitnami https://charts.bitnami.com/bitnami
-helm install my-redis bitnami/redis --version 18.0.0
-
-## comando get release desplegadas con helm 
-
-helm list -> lista los deployment helm chart
-helm status apache1 -> se obtiene el detalle del deployment en formato txt para ver el estado
-helm get manifest [app] -> se revisa el manifiesto kubernetes desplegado en el cluster
-helm get notes [app] -> recupera la documentacion del char
-helm get values [app] -> recupera los valores definidos en el release desplegado
-helm get all [app]  -> obtiene todos los valores del release apartir del chart  manifest , notes etc
-
-## comando show anivel del chart
-
-helm show readme bitnami/apache > readme.md
-helm show chart bitnami/apache > defchar
-helm show values bitnami/apache > values-apache
-helm show all bitnami/apache > 
-
-## upgrade charts
-
-helm upgrade --set service.ports.http=8080 --set service.type=NodePort  apache1 bitnami/apache -> ejemplo de upgrade port y tipo de servicio NodePort
-helm upgrade -f values-apache.yaml apache1 bitnami/apache -> ejemplo cambio de valores con fichero
-
-## rollback despliegues de 
-
-helm history apache1 -> validar el historico de deployment
-helm rollback apache1 [version] -> devolverse a un despliegue anterior
-
-## borrar despliegue release
-helm uninstall --dry-run apache1 -> simula la desistalacion pero no hace nada solo comprueba que no haya errores al eliminar.
-
-helm uninstall --keep-history apache1 -> con este comando flag --keep-history elimina pero deja el rastro de helm history [app]
-
-## Comentarios de tipo helm 
-
-ejemplo 
-
-```yaml
-{{- /*
-  Helm comment . este comentario se agrega al manifest de kubernetes que no quiere ser agregado al template
-*/}}
+Estructura de un chart:
+```bash
+├── Chart.yaml
+├── charts
+├── templates
+│   ├── NOTES.txt
+│   ├── _helpers.tpl
+│   ├── deployment.yaml
+│   ├── ingress.yaml
+│   ├── service.yaml
+│   └── tests
+│       └── test-connection.yaml
+└── values.yaml
 ```
 
-## Condiciones helm
+1. Para buscar el Chart de WordPress dentro del repositorio Bitnami que tienes agregado, usa:
+```bash
+helm search repo bitnami/wordpress
+````
+
+2. Si quieres ver todos los valores configurables por defecto del Chart (muy útil para personalizar la instalación), ejecuta:
+
+```bash
+helm show values bitnami/wordpress
+```
+
+3. Para consultar la documentación oficial (README) del Chart, donde se explican los usos y parámetros principales, utiliza:
+
+```bash
+helm show readme bitnami/wordpress
+```
+
+4. Si necesitas ver información general del Chart, como su versión, descripción y quién lo mantiene, usa:
+
+```bash
+helm show chart bitnami/wordpress
+```
+
+5. Cuando quieras actualizar la lista de Charts disponibles en todos los repositorios agregados, ejecuta:
+
+```bash
+helm repo update
+```
+
+6. Si necesitas eliminar el repositorio Bitnami de la configuración de Helm, utiliza:
+
+```bash
+helm repo remove bitnami
+```
+
+7. Para ver todos los repositorios de Helm que tienes actualmente configurados, ejecuta:
+
+```bash
+helm repo list
+```
+
+8. Finalmente, para agregar el repositorio oficial de Bitnami (si aún no lo tienes), usa:
+
+```bash
+helm repo add bitnami https://charts.bitnami.com/bitnami
+```
+
+9. Para ver los valores de configuración personalizados que se usaron al instalar el release `local-wp`:
+```bash
+helm get values local-wp
+```
+
+
+10. Para ver **todos los valores** de configuración, tanto los por defecto como los personalizados, del release `local-wp`:
+```bash
+helm get values local-wp --all
+```
+
+11. Para ver las notas post-instalación (tips de acceso, URLs, etc.) del release `local-wp`:
+```bash
+helm get notes local-wp
+```
+
+
+12. Para instalar el release `local-wp` con la versión 25.0.3 de Bitnami, usa:
+
+```bash
+helm install local-wp bitnami/wordpress --version 25.0.3
+```
+13. Para actulizar el release `local-wp` con la versión 25.0.3 de Bitnami y usar los valores personalizados en `values.yaml`, usa:
+```bash
+helm upgrade local-wp bitnami/wordpress --version 25.0.3  --reuse-values --values  values.yaml
+```
+
+
+
+14. Para eliminar el release `local-wp` y sus datos, usa:
+```bash
+helm uninstall local-wp
+```
+

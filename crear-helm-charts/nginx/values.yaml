@@ -1,0 +1,25 @@
+#replica Count
+#image , both nae and tag
+#service type and port
+environment: 'dev'
+## @param replicaCount: Number of replicas for the Nginx deployment
+replicaCount: 3
+## @param image.name: Name of the Docker image to use for the Nginx deployment
+## @param image.tag: Tag of the Docker image to use for the Nginx deployment
+
+image:
+  name: nginx
+  tag: 1.29.0
+
+## @param containerPorts: List of ports to expose from the Nginx container
+containerPorts: 
+ http: 8080
+## @param service.enabled: Whether to create a service for the Nginx deployment
+## @param service.type: Type of the service to expose the Nginx deployment
+## @param service.port: Port number to expose the Nginx deployment
+service:
+  enabled: false
+  type: ClusterIP
+  port: 80
+
+

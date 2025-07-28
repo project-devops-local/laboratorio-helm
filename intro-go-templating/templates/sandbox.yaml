@@ -1,0 +1,17 @@
+# esto es una variable generada por el template
+{{- /* esto es un comnentario de yaml */}}
+test: {{ upper .Values.test | replace " " "-"   }}
+labels:
+  {{- /* esto es un comentario de yaml  app label  de release*/}}
+  app: {{ .Release.Name }}
+  {{- /* esto es un chart label de yaml  app chart informaciton */}}
+  chart: {{ .Chart.Name }}
+  {{- if eq .Values.environment "prod" }}
+  environment: production
+  build: stable
+  public-ingress: true
+  {{- else }}
+  environment: development
+  build: alpha
+  public-ingress: false
+  {{- end }}

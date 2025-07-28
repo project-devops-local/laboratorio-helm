@@ -1,0 +1,38 @@
+environment: prod
+#@param customName: Custom name for the Nginx deployment
+customName: 'prueba'
+#replica Count
+#image , both nae and tag
+#service type and port
+
+## @param replicaCount: Number of replicas for the Nginx deployment
+replicaCount: 3
+## @param image.name: Name of the Docker image to use for the Nginx deployment
+## @param image.tag: Tag of the Docker image to use for the Nginx deployment
+
+image:
+  name: nginx
+  tag: 1.29.0
+
+## @param containerPorts: List of ports to expose from the Nginx container
+containerPorts: 
+  http: 999999
+
+## @param securityContext.enabled: Enable the security context for the Nginx deployment
+## @param securityContextrunAsUser: User ID to run the container as
+## @param securityContextfsGroup: Group ID to set for the container's filesystem
+securityContext:
+  enabled: true
+  runAsUser: 1000
+  fsGroup: 1000
+  
+
+## @param services["*"].type: Type of the service to create
+## @param services["*"].port: Port to expose for the service
+services:
+  svc1:
+    type: NodePort
+    port: 3000
+  pepito:
+    type: ClusterIP
+    port: 8080

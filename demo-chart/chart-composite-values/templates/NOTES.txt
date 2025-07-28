@@ -1,1 +1,0 @@
-Instalacion de nginx con chart-compose-value

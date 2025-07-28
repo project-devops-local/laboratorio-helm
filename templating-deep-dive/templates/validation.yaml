@@ -1,0 +1,13 @@
+{{- if and .Values.securityContext .Values.securityContext.enabled -}}
+{{- $runAsUser := required "securityContext.runAsUser debe proporcionar el valor para .runAsUser" .Values.securityContext.runAsUser -}}
+{{- $fsGroup := required "securityContext.fsGroup debe proporcionar el valor para .fsGroup" .Values.securityContext.fsGroup -}}
+
+{{- if eq (int .Values.securityContext.runAsUser) 0 -}}
+{{- fail "El valor de runAsUser no puede ser 0, debe ser un número mayor que 0" -}}
+{{- end -}}
+{{/*{{- if eq (int .Values.securityContext.fsGroup) 0 -}}*/}}
+{{- if int .Values.securityContext.fsGroup | eq 0 -}}
+{{- fail "El valor de fsGroup no puede ser 0, debe ser un número mayor que 0" -}}
+{{- end -}}
+
+{{- end -}}

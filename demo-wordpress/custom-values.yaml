@@ -1,0 +1,14 @@
+wordpressUsername: "maikol"
+wordpressPassword: "Maikol1234"
+mariadb:
+  auth:
+    rootPassword: "Maikol1234"
+    password: "Maikol1234" 
+
+replicaCount: 3
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 4
+  targetCPU: 50
+  targetMemory: 50
